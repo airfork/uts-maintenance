@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:300,400,700');
+html {
+    height: 100vh;
+    background-color: #f0e2f5;
+    font-family: 'Montserrat', "sans-serif";
+}
+
+.bus-list {
+    margin-top: 3rem;
+}
+
+tr:hover {
+    cursor: pointer;
+}
+
+table {
+    margin-bottom: 5%;
+}
+
+th {
+    font-size: 2rem;
+    cursor: auto;
+}
+
+td {
+    font-size: 1.3rem;
+}
+
+
+
