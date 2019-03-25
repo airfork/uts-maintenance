@@ -1,3 +1,10 @@
+<?php
+    $production = false;
+    if (getenv('PRODUCTION')) {
+        $production = true;
+    }
+    $web = 'https://inspection-list.herokuapp.com';
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -8,12 +15,12 @@
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="<?php if(getenv('PRODUCTION')){
+    <link rel="stylesheet" type="text/css" href="<?php if($production){
         echo 'https://inspection-list.herokuapp.com/css/index.css';
     } else {
         echo base_url() . 'css/index.css';
     } ?>">
-    <link rel="stylesheet" type="text/css" href="<?php if(getenv('PRODUCTION')){
+    <link rel="stylesheet" type="text/css" href="<?php if($production){
         echo 'https://inspection-list.herokuapp.com/css/busView.css';
     } else {
         echo base_url() . 'css/busView.css';
@@ -22,7 +29,8 @@
 </head>
 <body>
     <div class="container">
-        <h2 class="bus-num" onclick="window.location.href = '<?php echo site_url('/'); ?>'">
+        <h2 class="bus-num"
+            onclick="window.location.href = '<?php if ($production) { echo $web; } else { echo site_url('/');} ?>'">
             Bus <?php echo $bus['id']; ?>
         </h2>
 
@@ -232,8 +240,15 @@
                 </div>
             </li>
         </ul>
-        <input type="hidden" id="url" value="<?php echo site_url('buses/').$bus['id']; ?> ;">
-        <input type="hidden" id="site_url" value="<?php echo site_url('buses/') ?> ;">
+
+        <?php
+            $url = site_url('buses/');
+            if (getenv('PRODUCTION')) {
+                $url = 'https://inspection-list.herokuapp.com/buses/';
+            }
+        ?>
+        <input type="hidden" id="url" value="<?php echo $url.$bus['id']; ?> ;">
+        <input type="hidden" id="site_url" value="<?php echo $url ?> ;">
     </div>
 
     <div class="fixed-action-btn">

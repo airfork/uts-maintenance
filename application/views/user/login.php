@@ -14,15 +14,19 @@
 </head>
 <body>
     <?php
-    $this->load->helper('form');
-    $this->load->library('form_validation');
+        $this->load->helper('form');
+        $this->load->library('form_validation');
+        $url = site_url('/login');
+        if (getenv('PRODUCTION')) {
+            $url = 'https://inspection-list.herokuapp.com/register';
+        }
     ?>
 
     <section class="align">
         <h2>Login</h2>
         <div class="grid">
 
-            <form action="<?php echo site_url('/login');?>" method="POST" class="form login">
+            <form action="<?php echo $url;?>" method="POST" class="form login">
 
                 <div class="form__field">
                     <label for="login__username"><svg class="icon"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#user"></use></svg><span class="hidden">Username</span></label>
