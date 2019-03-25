@@ -75,8 +75,7 @@ class Issues extends CI_Controller {
         $writer->writeToFile($filename);
         ob_clean();
         $data = file_get_contents($filename);
-        echo $data;
-//        force_download('Bus Issue Master.xlsx', $data. true);
+        force_download('Bus Issue Master.xlsx', $data. true);
     }
 
     private function validate() {
