@@ -71,8 +71,6 @@ class Issues extends CI_Controller {
         $writer->writeToFile($filename);
         header("Content-Disposition: attachment; filename=Bus Issue Master.xlsx;");
         header('Content-Type: application/octet-stream');
-        header('Content-Length: ' . filesize($filename));
-        header("Pragma: no-cache");
         header("Expires: 0");
         ob_get_clean();
         readfile($filename, false);
