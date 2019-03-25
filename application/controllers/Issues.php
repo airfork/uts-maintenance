@@ -88,7 +88,7 @@ class Issues extends CI_Controller {
         header('Pragma: public');
 
         //Define file size
-        header('Content-Length: ' . filesize($filename));
+//        header('Content-Length: ' . filesize($filename));
 
         ob_clean();
         flush();
