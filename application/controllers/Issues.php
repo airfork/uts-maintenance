@@ -69,12 +69,13 @@ class Issues extends CI_Controller {
 
         $filename = $_SERVER['DOCUMENT_ROOT'].'/uts-maintenance/codeigniter/Bus Issue Master.xlsx';
         $writer->writeToFile($filename);
+        $this->downloadExcel($filename);
+    }
+
+    private function downloadExcel($filename) {
         ob_get_clean();
+        header('Content-Type: application/vnd.ms-excel');
         header("Content-Disposition: attachment; filename=Bus Issue Master.xlsx;");
-        header('Content-Type: application/octet-stream');
-        header('Content-Length: ' . filesize($filename));
-        header("Pragma: no-cache");
-        header("Expires: 0");
         readfile($filename);
         ob_end_flush();
     }
