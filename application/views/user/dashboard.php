@@ -33,7 +33,19 @@
     } else {
         echo base_url() . 'css/dashboard.css';
     } ?>">
-    <title>Buses</title>
+    <?php
+    $favURL = base_url() . 'bus-favicon';
+    if ($production) {
+        $favURL = 'https://inspection-list.herokuapp.com/bus-favicon';
+    }
+    ?>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="<?php echo $favURL.'/apple-touch-icon.png'; ?>">
+    <link rel="icon" type="image/png" sizes="32x32" href="<?php echo $favURL.'/favicon-32x32.png'; ?>">
+    <link rel="icon" type="image/png" sizes="16x16" href="<?php echo $favURL.'/favicon-16x16.png '; ?>">
+    <link rel="manifest" href="<?php echo $favURL.'/site.webmanifest'; ?>">
+
+    <title>Inspections</title>
 </head>
 <body>
     <div class="container">
