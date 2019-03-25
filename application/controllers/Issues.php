@@ -70,7 +70,7 @@ class Issues extends CI_Controller {
 
         $filename = $_SERVER['DOCUMENT_ROOT'].'/uts-maintenance/codeigniter/Bus Issue Master.xlsx';
         if ($this->production) {
-            $filename = '/Bus Issue Master.xlsx';
+            $filename = 'Bus Issue Master.xlsx';
         }
         $writer->writeToFile($filename);
         ob_clean();
