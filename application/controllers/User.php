@@ -7,12 +7,18 @@
  */
 
 class User extends CI_Controller {
+    private $production = false;
+    private $webURL = 'https://inspection-list.herokuapp.com';
+
     public function __construct() {
         parent::__construct();
         $this->load->library('session');
         $this->load->database();
         $this->load->model('user_model');
         $this->load->helper('url_helper');
+        if (getenv('PRODUCTION')) {
+            $this->production = true;
+        }
     }
 
     public function index() {
@@ -36,6 +42,10 @@ class User extends CI_Controller {
             );
             $this->load->view('user/login', $data);
         } else {
+            if ($this->production) {
+                redirect($this->webURL.'/dashboard', 'refresh');
+                return;
+            }
             redirect('/dashboard', 'refresh');
         }
     }
@@ -72,6 +82,10 @@ class User extends CI_Controller {
             $this->load->view('user/register', $data);
         } else {
             $_SESSION['id'] = $this->encryption->encrypt($this->user_model->create());
+            if ($this->production) {
+                redirect($this->webURL, 'refresh');
+                return;
+            }
             redirect('/', 'refresh');
         }
     }
@@ -90,6 +104,10 @@ class User extends CI_Controller {
     public function logout() {
         session_unset();
         session_destroy();
+        if ($this->production) {
+            redirect($this->webURL, 'refresh');
+            return;
+        }
         redirect('/', 'refresh');
     }
 
@@ -108,12 +126,20 @@ class User extends CI_Controller {
 
     private function validate() {
         if (empty($_SESSION['id'])) {
+            if ($this->production) {
+                redirect($this->webURL.'/login', 'refresh');
+                return;
+            }
             redirect('/login', 'refresh');
         }
     }
 
     private function signed_in() {
         if (!empty($_SESSION['id'])) {
+            if ($this->production) {
+                redirect($this->webURL, 'refresh');
+                return;
+            }
             redirect('/', 'refresh');
         }
     }

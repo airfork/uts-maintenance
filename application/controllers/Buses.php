@@ -8,12 +8,18 @@
  */
 class Buses extends CI_Controller {
 
+    private $production = false;
+    private $webURL = 'https://inspection-list.herokuapp.com';
+
     public function __construct() {
         parent::__construct();
         $this->load->model('bus_model');
         $this->load->model('issues_model');
         $this->load->helper('url_helper');
         $this->load->library('session');
+        if (getenv('PRODUCTION')) {
+            $this->production = true;
+        }
     }
 
     public function index() {
@@ -24,7 +30,10 @@ class Buses extends CI_Controller {
     public function view($bus = NULL) {
         $data['bus'] = $this->bus_model->get_buses($bus);
         if ($data['bus']['completed']) {
-            echo '1';
+            if ($this->production) {
+                redirect($this->webURL, 'refresh');
+                return;
+            }
             redirect('/', 'refresh');
             return;
         }
