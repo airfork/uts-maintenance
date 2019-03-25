@@ -18,7 +18,7 @@
         $this->load->library('form_validation');
         $url = site_url('/login');
         if (getenv('PRODUCTION')) {
-            $url = 'https://inspection-list.herokuapp.com/register';
+            $url = 'https://inspection-list.herokuapp.com/login';
         }
     ?>
 
