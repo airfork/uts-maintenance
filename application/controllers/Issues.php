@@ -68,6 +68,9 @@ class Issues extends CI_Controller {
         }
 
         $filename = $_SERVER['DOCUMENT_ROOT'].'/uts-maintenance/codeigniter/Bus Issue Master.xlsx';
+        if ($this->production) {
+            $filename = $_SERVER['DOCUMENT_ROOT'];
+        }
         ob_get_clean();
         $writer->writeToFile($filename);
         header('Content-Type: application/vnd.ms-excel');
