@@ -8,7 +8,11 @@
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url().'css/index.css'; ?>">
+    <link rel="stylesheet" type="text/css" href="<?php if(getenv('PRODUCTION')){
+        echo 'https://inspection-list.herokuapp.com/css/index.css';
+    } else {
+        echo base_url() . 'css/index.css';
+    } ?>">
     <title>Buses</title>
 </head>
 <body>
