@@ -69,6 +69,9 @@ class Issues extends CI_Controller {
         }
 
         $filename = $_SERVER['DOCUMENT_ROOT'].'/uts-maintenance/codeigniter/Bus Issue Master.xlsx';
+        if ($this->production) {
+            $filename = '/Bus Issue Master.xlsx';
+        }
         $writer->writeToFile($filename);
         $data = file_get_contents($filename);
         force_download('Bus Issue Master.xlsx', $data. true);
