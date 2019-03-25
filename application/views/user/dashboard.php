@@ -29,7 +29,7 @@
         echo base_url() . 'css/busView.css';
     } ?>">
     <link rel="stylesheet" type="text/css" href="<?php if($production){
-        echo 'https://inspection-list.herokuapp.com/css/index.css';
+        echo 'https://inspection-list.herokuapp.com/css/dashboard.css';
     } else {
         echo base_url() . 'css/dashboard.css';
     } ?>">
@@ -66,7 +66,7 @@
     <input type="hidden" id="url" value="<?php echo $url ?> ;">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <script src="<?php if(getenv('PRODUCTION')){
+    <script src="<?php if($production){
         echo 'https://inspection-list.herokuapp.com/js/dashboard.js';
     } else {
         echo base_url() . 'js/dashboard.js';
