@@ -15,6 +15,14 @@
     } ?>">
     <title>Buses</title>
 </head>
+
+<?php
+    $url = site_url('buses/');
+    if (getenv('PRODUCTION')) {
+        $url = 'https://inspection-list.herokuapp.com/buses/';
+    }
+?>
+
 <body>
     <div class="container bus-list">
         <table class="striped highlight">
@@ -25,7 +33,7 @@
             </thead>
             <tbody>
                 <?php foreach ($buses as $bus): ?>
-                    <tr onclick="window.location.href = '<?php echo site_url('buses/').$bus['id']; ?>';">
+                    <tr onclick="window.location.href = '<?php echo $url.$bus['id']; ?>';">
                         <td>
                             <?php echo $bus['id']; ?>
                         </td>
