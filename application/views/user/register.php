@@ -5,7 +5,11 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url().'css/login.css'; ?>">
+    <link rel="stylesheet" type="text/css" href="<?php if(getenv('PRODUCTION')){
+        echo 'https://inspection-list.herokuapp.com/css/login.css';
+    } else {
+        echo base_url() . 'css/login.css';
+    } ?>">
     <title>Buses</title>
 </head>
 <body>

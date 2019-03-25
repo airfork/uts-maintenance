@@ -7,9 +7,21 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url().'css/index.css'; ?>">
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url().'css/busView.css'; ?>">
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url().'css/dashboard.css'; ?>">
+    <link rel="stylesheet" type="text/css" href="<?php if(getenv('PRODUCTION')){
+        echo 'https://inspection-list.herokuapp.com/css/index.css';
+    } else {
+        echo base_url() . 'css/index.css';
+    } ?>">
+    <link rel="stylesheet" type="text/css" href="<?php if(getenv('PRODUCTION')){
+        echo 'https://inspection-list.herokuapp.com/css/busView.css';
+    } else {
+        echo base_url() . 'css/busView.css';
+    } ?>">
+    <link rel="stylesheet" type="text/css" href="<?php if(getenv('PRODUCTION')){
+        echo 'https://inspection-list.herokuapp.com/css/index.css';
+    } else {
+        echo base_url() . 'css/dashboard.css';
+    } ?>">
     <title>Buses</title>
 </head>
 <body>
@@ -43,6 +55,10 @@
     <input type="hidden" id="url" value="<?php echo site_url('') ?> ;">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <script src="<?php echo base_url().'js/dashboard.js'; ?>"></script>
+    <script src="<?php if(getenv('PRODUCTION')){
+        echo 'https://inspection-list.herokuapp.com/js/dashboard.js';
+    } else {
+        echo base_url() . 'js/dashboard.js';
+    } ?>"></script>
 </body>
 </html>

@@ -8,8 +8,16 @@
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url().'css/index.css'; ?>">
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url().'css/busView.css'; ?>">
+    <link rel="stylesheet" type="text/css" href="<?php if(getenv('PRODUCTION')){
+        echo 'https://inspection-list.herokuapp.com/css/index.css';
+    } else {
+        echo base_url() . 'css/index.css';
+    } ?>">
+    <link rel="stylesheet" type="text/css" href="<?php if(getenv('PRODUCTION')){
+        echo 'https://inspection-list.herokuapp.com/css/busView.css';
+    } else {
+        echo base_url() . 'css/busView.css';
+    } ?>">
     <title>Buses</title>
 </head>
 <body>
@@ -235,6 +243,10 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <script src="<?php echo base_url().'js/index.js'; ?>"></script>
+    <script src="<?php if(getenv('PRODUCTION')){
+        echo 'https://inspection-list.herokuapp.com/js/index.js';
+    } else {
+        echo base_url() . 'js/index.js';
+    } ?>"></script>
 </body>
 </html>
