@@ -91,8 +91,9 @@ class Issues extends CI_Controller {
 //        header('Content-Length: ' . filesize($filename));
 
         ob_clean();
+//        readfile($filename);
+        echo file_get_contents($filename);
         flush();
-        readfile($filename);
         exit;
     }
 
