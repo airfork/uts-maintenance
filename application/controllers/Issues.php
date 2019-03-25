@@ -69,11 +69,11 @@ class Issues extends CI_Controller {
 
         $filename = $_SERVER['DOCUMENT_ROOT'].'/uts-maintenance/codeigniter/Bus Issue Master.xlsx';
         $writer->writeToFile($filename);
-        ob_get_clean();
+        ob_clean();
         header('Content-Type: application/vnd.ms-excel');
         header("Content-Disposition: attachment; filename=Bus Issue Master.xlsx;");
         readfile($filename);
-        ob_end_flush();
+        flush();
     }
 
     private function validate() {
