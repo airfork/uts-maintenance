@@ -24,6 +24,8 @@
 ?>
 
 <body>
+    <h5><?php echo $_SERVER['DOCUMENT_ROOT'] ?></h5>
+    <h5><?php echo $_SERVER['PHP_SELF'] ?></h5>
     <div class="container bus-list">
         <table class="striped highlight">
             <thead>
