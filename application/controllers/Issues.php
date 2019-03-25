@@ -71,8 +71,8 @@ class Issues extends CI_Controller {
         if ($this->production) {
             $filename = $_SERVER['DOCUMENT_ROOT'];
         }
-        ob_get_clean();
         $writer->writeToFile($filename);
+        ob_get_clean();
         header('Content-Type: application/vnd.ms-excel');
         header("Content-Disposition: attachment; filename=Bus Issue Master.xlsx;");
         readfile($filename);
