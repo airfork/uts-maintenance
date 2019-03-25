@@ -73,24 +73,59 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $active_group = 'default';
 $query_builder = TRUE;
 
+// username regex : \/[A-z\d]+: -- Remove starting '/' and trailing ':'
+// host regex [\w\d]+-\d+-\d+-\d+-\d+.\w+-\d+\.\w+\.com
+// password regex :[\d\w]+@ -- Remove starting ':' and trailing '@'
+// database name regex 5432\/[\d\w]+ -- Remove starting '5432/'
+
+$dbURI = getenv('DATABASE_URL');
+preg_match('/\/[A-z\d]+:/', $dbURI, $username);
+$username = substr($username[0], 1, strlen($username[0]) - 2);
+preg_match('/[\w\d]+-\d+-\d+-\d+-\d+.\w+-\d+\.\w+\.com/', $dbURI, $host);
+$host = $host[0];
+preg_match('/:[\d\w]+@/', $dbURI, $password);
+$password = substr($password[0], 1, strlen($password[0]) - 2);
+preg_match('/5432\/[\d\w]+/', $dbURI, $dbname);
+$dbname = str_replace('5432/', '', $dbname[0]);
+$constring = 'pgsql:host='.$host.';port=5432;dbname='.$dbname.';user='.$username.';password='.$password;
+
 $db['default'] = array(
-	'dsn'	=> '',
-	'hostname' => 'localhost',
-	'username' => 'root',
-	'password' => '',
-	'database' => 'romeo',
-	'dbdriver' => 'mysqli',
+    'dsn' => $constring,
+	'dbdriver' => 'pdo',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
 	'db_debug' => (ENVIRONMENT !== 'production'),
 	'cache_on' => FALSE,
 	'cachedir' => '',
 	'char_set' => 'utf8',
-	'dbcollat' => 'utf8_general_ci',
+	'dbcollat' => '',
 	'swap_pre' => '',
-	'encrypt' => FALSE,
+	'encrypt' => FALSE,  
 	'compress' => FALSE,
 	'stricton' => FALSE,
 	'failover' => array(),
 	'save_queries' => TRUE
 );
+
+// $db['default'] = array(
+// 	'dsn'	=> '',
+// 	'hostname' => 'localhost',
+// 	'username' => 'root',
+// 	'password' => '',
+// 	'database' => 'romeo',
+// 	'dbdriver' => 'mysqli',
+// 	'dbprefix' => '',
+// 	'pconnect' => FALSE,
+// 	'db_debug' => (ENVIRONMENT !== 'production'),
+// 	'cache_on' => FALSE,
+// 	'cachedir' => '',
+// 	'char_set' => 'utf8',
+// 	'dbcollat' => 'utf8_general_ci',
+// 	'swap_pre' => '',
+// 	'encrypt' => FALSE,
+// 	'compress' => FALSE,
+// 	'stricton' => FALSE,
+// 	'failover' => array(),
+// 	'save_queries' => TRUE
+// );
+

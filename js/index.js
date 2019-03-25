@@ -35,11 +35,11 @@ function getDescriptions() {
 function sendIssues(issues) {
     var request = new XMLHttpRequest();
     request.open('POST', url, true);
-
     request.onload = function () {
+        console.log(request.responseText);
         if (request.status >= 200 && request.status < 400) {
             var data = JSON.parse(request.responseText);
-            csrf = data.csrf;
+            csrf = data.csrf_token;
             if (data.valid) {
                 M.toast({
                     html: 'Bus successfully completed! Redirecting...'
