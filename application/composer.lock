@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "114bd3895a31b3fe6040efd05912bf6c",
+    "content-hash": "b1ab6e8f7b48b2e473bfdea4dd25eae3",
     "packages": [
         {
             "name": "mk-j/php_xlsxwriter",
@@ -1479,7 +1479,8 @@
     "prefer-lowest": false,
     "platform": {
         "php": ">=7.3.0",
-        "ext-json": "*"
+        "ext-json": "*",
+        "ext-fileinfo": "*"
     },
     "platform-dev": []
 }
