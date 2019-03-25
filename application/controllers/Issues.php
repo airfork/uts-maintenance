@@ -67,9 +67,16 @@ class Issues extends CI_Controller {
             $writer->writeSheetRow($location, array());
         }
 
-        $writer->writeToFile($_SERVER['DOCUMENT_ROOT'].'/uts-maintenance/codeigniter/Bus Issue Master.xlsx');
-        header("Content-disposition: attachment;filename=Bus Issue Master.xlsx");
-        readfile($_SERVER['DOCUMENT_ROOT'].'/uts-maintenance/codeigniter/Bus Issue Master.xlsx', false);
+        $filename = $_SERVER['DOCUMENT_ROOT'].'/uts-maintenance/codeigniter/Bus Issue Master.xlsx';
+        $writer->writeToFile($filename);
+        header("Content-Disposition: attachment; filename=Bus Issue Master.xlsx;");
+        header('Content-Type: application/octet-stream');
+        header('Content-Length: ' . filesize($filename));
+        header("Pragma: no-cache");
+        header("Expires: 0");
+        ob_get_clean();
+        readfile($filename, false);
+        ob_end_flush();
     }
 
     private function validate() {
