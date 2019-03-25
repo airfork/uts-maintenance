@@ -62,7 +62,7 @@ class Issues extends CI_Controller {
             $writer->writeSheetHeader($location, array('Unit #' => 'integer', 'Details' => 'string', 'Date Reported' => 'MM/DD/YYYY'), $col_options = ['widths'=>[10,48,19], 'halign' => 'center', 'border'=>'left,right,top,bottom', 'border-style' => 'thin', 'font-style' => 'bold']);
             foreach ($rows as $issue) {
                 $style = ($count++ % 2 == 0 ? $evenStyle : $oddStyle);
-                $writer->writeSheetRow($location, array($issue['busNumber'], $issue['description'], $issue['createdAt']), $style);
+                $writer->writeSheetRow($location, array($issue['busnumber'], $issue['description'], $issue['createdat']), $style);
             }
             $writer->writeSheetRow($location, array());
         }
