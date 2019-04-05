@@ -15,6 +15,7 @@ class Issues extends CI_Controller {
         $this->load->model('issues_model');
         $this->load->helper('url_helper');
         $this->load->helper('download');
+        $this->load->helper('file');
         $this->load->library('session');
         if (getenv('PRODUCTION')) {
             $this->production = true;
@@ -63,19 +64,19 @@ class Issues extends CI_Controller {
             $writer->writeSheetHeader($location, array('Unit #' => 'integer', 'Details' => 'string', 'Date Reported' => 'MM/DD/YYYY'), $col_options = ['widths'=>[10,48,19], 'halign' => 'center', 'border'=>'left,right,top,bottom', 'border-style' => 'thin', 'font-style' => 'bold']);
             foreach ($rows as $issue) {
                 $style = ($count++ % 2 == 0 ? $evenStyle : $oddStyle);
-                $writer->writeSheetRow($location, array($issue['busnumber'], $issue['description'], $issue['createdat']), $style);
+                $writer->writeSheetRow($location, array($issue['busnumber'], $issue['description'], $issue['createdate']), $style);
             }
             $writer->writeSheetRow($location, array());
         }
 
-        $filename = $_SERVER['DOCUMENT_ROOT'].'/uts-maintenance/codeigniter/Bus Issue Master.xlsx';
+        $filename =APPPATH.'/tmp/Bus.xlsx';
         if ($this->production) {
-            $filename = 'Bus Issue Master.xlsx';
+            $filename = 'Bus.xlsx';
         }
-        $writer->writeToFile($filename);
         ob_clean();
+        $writer->writeToFile($filename);
         $data = file_get_contents($filename);
-        force_download('Bus Issue Master.xlsx', $data. true);
+        force_download('Bus.xlsx', $data. true);
     }
 
     private function validate() {
