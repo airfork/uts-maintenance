@@ -36,7 +36,6 @@ function sendIssues(issues) {
     var request = new XMLHttpRequest();
     request.open('POST', url, true);
     request.onload = function () {
-        console.log(request.responseText);
         if (request.status >= 200 && request.status < 400) {
             var data = JSON.parse(request.responseText);
             csrf = data.csrf_token;
@@ -55,7 +54,7 @@ function sendIssues(issues) {
         } else {
             // We reached our target server, but it returned an error
             M.toast({
-                html: 'There was a problem processing your request, please try again.'
+                html: 'There was a problem processing your request, please refresh the page and try again.'
             });
         }
     };
@@ -64,7 +63,7 @@ function sendIssues(issues) {
         // There was a connection error of some sort
         console.log("There was an error of some type, please try again");
         M.toast({
-            html: 'There was a problem processing your request, please try again.'
+            html: 'There was a problem processing your request, please refresh the page and try again.'
         });
     };
 

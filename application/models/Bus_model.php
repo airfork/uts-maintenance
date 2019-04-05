@@ -39,4 +39,12 @@ class Bus_model extends CI_Model {
         $this->db->set('id', $bus);
         return $this->db->insert('buses');
     }
+
+    public function delete($bus = NULL): bool {
+        if (empty($bus)) {
+            return false;
+        }
+        $this->db->where('id', $bus);
+        return $this->db->delete('buses');
+    }
 }

@@ -89,6 +89,22 @@
                     </span>
                 </div>
             </li>
+            <li>
+                <div class="collapsible-header"><i class="material-icons">delete</i>Remove Bus</div>
+                <div class="collapsible-body collapse-background center-align">
+                    <span>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input type="number" id="delete-bus-num" min="0" max="100000">
+                                <label for="delete-bus-num" id="delete-bus-label">Bus Number</label>
+                            </div>
+                            <div>
+                                <a href="#" class="dashboard-action" id="delete-bus">Delete Bus</a>
+                            </div>
+                        </div>
+                    </span>
+                </div>
+            </li>
     </div>
 
     <input type="hidden" id="url" value="<?php echo $url ?> ;">

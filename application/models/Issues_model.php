@@ -33,6 +33,11 @@ class Issues_model extends CI_Model {
         return $query->result_array();
     }
 
+    public function delete($bus): bool {
+        $this->db->where('busnumber', $bus);
+        return $this->db->delete('issues');
+    }
+
     private function sanitize($data) {
         return htmlspecialchars(trim(stripslashes($data)));
     }

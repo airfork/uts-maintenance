@@ -128,24 +128,62 @@ class Buses extends CI_Controller {
     }
 
     public function add() {
+        // Sanitize data
         $bus = $this->sanitize($_POST['bus']);
+        // Make sure input is a number
         if (empty($bus) || !is_numeric($bus)) {
             header('Content-Type: application/json');
             echo json_encode(array('valid' => false, 'error' => 'Bus number missing or invalid.' ,'csrf_token' => $this->security->get_csrf_hash()));
             return;
         }
+        // Convert to number
         $bus = intval($bus);
+        // Make sure bus does not already exist
         if (!empty($this->bus_model->get_buses($bus))) {
             header('Content-Type: application/json');
             echo json_encode(array('valid' => false, 'error' => 'Bus already exists.' ,'csrf_token' => $this->security->get_csrf_hash()));
             return;
         }
+        // Make sure bus number is in range
         if ($bus < 0 || $bus > 100000) {
             header('Content-Type: application/json');
             echo json_encode(array('valid' => false, 'error' => 'Invalid number range.' ,'csrf_token' => $this->security->get_csrf_hash()));
             return;
         }
+        // Add bus, return error message if this fails for some reason
         if (!$this->bus_model->add($bus)) {
+            header('Content-Type: application/json');
+            echo json_encode(array('valid' => false, 'error' => 'There was an error of some sort, please try again.' ,'csrf_token' => $this->security->get_csrf_hash()));
+            return;
+        }
+        // Regular exit, everything went well
+        header('Content-Type: application/json');
+        echo json_encode(array('valid' => true, 'csrf_token' => $this->security->get_csrf_hash()));
+    }
+
+    public function delete() {
+        // Sanitize input
+        $bus = $this->sanitize($_POST['bus']);
+        // Make sure input is a number
+        if (empty($bus) || !is_numeric($bus)) {
+            header('Content-Type: application/json');
+            echo json_encode(array('valid' => false, 'error' => 'Bus number missing or invalid.' ,'csrf_token' => $this->security->get_csrf_hash()));
+            return;
+        }
+        // Convert to number
+        $bus = intval($bus);
+        // Make sure bus exists
+        if (empty($this->bus_model->get_buses($bus))) {
+            header('Content-Type: application/json');
+            echo json_encode(array('valid' => false, 'error' => 'Bus does not exist.' ,'csrf_token' => $this->security->get_csrf_hash()));
+            return;
+        }
+        if (!$this->bus_model->delete($bus)) {
+            header('Content-Type: application/json');
+            echo json_encode(array('valid' => false, 'error' => 'There was an error of some sort, please try again.' ,'csrf_token' => $this->security->get_csrf_hash()));
+            return;
+        }
+        if (!$this->issues_model->delete($bus)) {
             header('Content-Type: application/json');
             echo json_encode(array('valid' => false, 'error' => 'There was an error of some sort, please try again.' ,'csrf_token' => $this->security->get_csrf_hash()));
             return;
