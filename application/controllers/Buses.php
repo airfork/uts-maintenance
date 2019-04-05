@@ -64,13 +64,12 @@ class Buses extends CI_Controller {
             'Bike Racks',
             'Other',
         );
-        $data['bus'] = $this->bus_model->get_buses($bus);
+        $data['bus'] = $this->bus_model->get_buses($this->sanitize($bus));
         if(empty($data['bus']) || $data['bus']['completed']) {
             header('Content-Type: application/json');
             echo json_encode(array('valid' => false, 'csrf_token' => $this->security->get_csrf_hash()));
             return;
         }
-        $jData = json_decode(file_get_contents('php://input'), true);
         global $valid;
         global $name;
         $valid = false;
@@ -123,9 +122,36 @@ class Buses extends CI_Controller {
            echo json_encode(array('valid' => false, 'csrf_token' => $this->security->get_csrf_hash()));
            return;
        }
-
+       header('Content-Type: application/json');
        echo json_encode(array('valid' => true, 'csrf_token' => $this->security->get_csrf_hash()));
 
+    }
+
+    public function add() {
+        $bus = $this->sanitize($_POST['bus']);
+        if (empty($bus) || !is_numeric($bus)) {
+            header('Content-Type: application/json');
+            echo json_encode(array('valid' => false, 'error' => 'Bus number missing or invalid.' ,'csrf_token' => $this->security->get_csrf_hash()));
+            return;
+        }
+        $bus = intval($bus);
+        if (!empty($this->bus_model->get_buses($bus))) {
+            header('Content-Type: application/json');
+            echo json_encode(array('valid' => false, 'error' => 'Bus already exists.' ,'csrf_token' => $this->security->get_csrf_hash()));
+            return;
+        }
+        if ($bus < 0 || $bus > 100000) {
+            header('Content-Type: application/json');
+            echo json_encode(array('valid' => false, 'error' => 'Invalid number range.' ,'csrf_token' => $this->security->get_csrf_hash()));
+            return;
+        }
+        if (!$this->bus_model->add($bus)) {
+            header('Content-Type: application/json');
+            echo json_encode(array('valid' => false, 'error' => 'There was an error of some sort, please try again.' ,'csrf_token' => $this->security->get_csrf_hash()));
+            return;
+        }
+        header('Content-Type: application/json');
+        echo json_encode(array('valid' => true, 'csrf_token' => $this->security->get_csrf_hash()));
     }
 
     private function validate() {
@@ -133,5 +159,9 @@ class Buses extends CI_Controller {
             return false;
         }
         return true;
+    }
+
+    private function sanitize($data) {
+        return htmlspecialchars(trim(stripslashes($data)));
     }
 }

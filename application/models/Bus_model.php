@@ -31,4 +31,12 @@ class Bus_model extends CI_Model {
         $this->db->set('completed', false);
         return $this->db->update('buses');
     }
+
+    public function add($bus = NULL): bool {
+        if (empty($bus)) {
+            return false;
+        }
+        $this->db->set('id', $bus);
+        return $this->db->insert('buses');
+    }
 }

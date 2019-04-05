@@ -53,6 +53,7 @@ $route['default_controller'] = 'buses';
 $route['buses/(:num)']['GET'] = 'buses/view/$1';
 $route['buses/(:num)']['POST'] = 'buses/issue/$1';
 $route['buses/reset']['POST'] = 'buses/reset';
+$route['buses/add']['POST'] = 'buses/add';
 $route['issues/master']['GET'] = 'issues/master';
 $route['dashboard']['GET'] = 'user/dashboard';
 $route['login']['GET'] = 'user/index';

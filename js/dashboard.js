@@ -10,6 +10,10 @@ document.getElementById('bus-list').onclick = function() {
     }
 };
 
+document.getElementById('add-bus').onclick = function () {
+    addBus();
+};
+
 function sendResetRequest() {
     var request = new XMLHttpRequest();
     request.open('POST', url+'/buses/reset', true);
@@ -50,6 +54,49 @@ function sendResetRequest() {
 
     var data = new FormData();
     data.set('csrf_token', csrf);
+    request.send(data);
+}
+
+function addBus() {
+    var request = new XMLHttpRequest();
+    request.open('POST', url+'/buses/add', true);
+
+    request.onload = function () {
+        if (request.status >= 200 && request.status < 400) {
+            var data = JSON.parse(request.responseText);
+            csrf = data.csrf_token;
+            if (data.valid) {
+                M.toast({
+                    html: 'Bus successfully added.'
+                });
+                // Reset input
+                document.getElementById('bus-num').value='';
+                document.getElementById('bus-label').classList.remove('active');
+            } else {
+                M.toast({
+                    html: data.error
+                });
+            }
+        } else {
+            // We reached our target server, but it returned an error
+            M.toast({
+                html: 'There was a problem processing your request, please try again.'
+            });
+        }
+    };
+
+    request.onerror = function () {
+        // There was a connection error of some sort
+        console.log("There was an error of some type, please try again");
+        M.toast({
+            html: 'There was a problem processing your request, please try again.'
+        });
+    };
+
+    var data = new FormData();
+    const bus = document.getElementById('bus-num').value;
+    data.set('csrf_token', csrf);
+    data.set('bus', bus);
     request.send(data);
 }
 
