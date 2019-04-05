@@ -40,8 +40,7 @@ class User extends CI_Controller {
                 'name' => $this->security->get_csrf_token_name(),
                 'hash' => $this->security->get_csrf_hash()
             );
-            echo $this->production;
-//            $this->load->view('user/login', $data);
+            $this->load->view('user/login', $data);
         } else {
             if ($this->production) {
                 redirect($this->webURL.'/dashboard', 'refresh');
