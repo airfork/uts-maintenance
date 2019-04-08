@@ -65,11 +65,9 @@
                 <div class="collapsible-header"><i class="material-icons">list</i>Master List</div>
                 <div class="collapsible-body collapse-background center-align">
                     <span>
-                        <form action="<?php echo $url.'/issues/master'; ?>" method="GET" id="master-list">
-                            <a href="#" class="dashboard-action" onclick="document.getElementById('master-list').submit();">
-                                Download Master List
-                            </a>
-                        </form>
+                        <a href="Bus Issue Master.xlsx" class="dashboard-action">
+                            Download Master List
+                        </a>
                     </span>
                 </div>
             </li>
