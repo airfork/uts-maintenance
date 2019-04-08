@@ -43,6 +43,7 @@ class Buses extends CI_Controller {
         $this->load->view('buses/view', $data);
     }
 
+    // Add issues to db
     public function issue($bus = NULL) {
         $locations = array(
             'Destination Signs & Emergency Button',
@@ -64,27 +65,37 @@ class Buses extends CI_Controller {
             'Bike Racks',
             'Other',
         );
+        // Make sure bus exists and has not already been completed
         $data['bus'] = $this->bus_model->get_buses($this->sanitize($bus));
         if(empty($data['bus']) || $data['bus']['completed']) {
             header('Content-Type: application/json');
             echo json_encode(array('valid' => false, 'csrf_token' => $this->security->get_csrf_hash()));
             return;
         }
+        // Make global because scoping is weird in PHP
         global $valid;
         global $name;
         $valid = false;
+        // Iterate over items in POST
         foreach ($_POST as $loc => $issue) {
+            // Replace any underscores put in with spaces
             $loc = str_replace('_', ' ', htmlspecialchars_decode($loc));
+            // Check for name field, needs to be first
             if ($loc === 'name') {
                 $valid = true;
                 $name = $issue;
+
+                // Check that location exits and that the issue is not whitespace
             } else if(in_array(htmlspecialchars_decode($loc), $locations) && trim($issue) !== '') {
+                // If name is not set, exit
                 if (!$valid) {
                     header('Content-Type: application/json');
                     echo json_encode(array('valid' => false, 'csrf_token' => $this->security->get_csrf_hash()));
                     return;
                 }
+                // Create issue in db
                 $rows = $this->issues_model->create($bus, $issue, htmlspecialchars_decode($loc), $name);
+                // Sanity check, if no rows updated, exit
                 if ($rows === 0) {
                     header('Content-Type: application/json');
                     echo json_encode(array('valid' => false, 'csrf_token' => $this->security->get_csrf_hash()));
@@ -92,41 +103,49 @@ class Buses extends CI_Controller {
                 }
             }
         }
+        // If name not set (there are no issues so loop not entered), exit
         if (!$valid) {
             header('Content-Type: application/json');
             echo json_encode(array('valid' => false, 'csrf_token' => $this->security->get_csrf_hash()));
             return;
         }
+        // Mark bus as done
         if (!$this->bus_model->update($bus)) {
             header('Content-Type: application/json');
             echo json_encode(array('valid' => false, 'csrf_token' => $this->security->get_csrf_hash()));
             return;
         }
+        // Success
         header('Content-Type: application/json');
         echo json_encode(array('valid' => true, 'csrf_token' => $this->security->get_csrf_hash()));
     }
 
+    // Resets buses to being uncompleted
     public function reset() {
+        // Make sure user is signed in
        if (!$this->validate()) {
            echo json_encode(array('valid' => false, 'csrf_token' => $this->security->get_csrf_hash(), 'not_signed_in' => true));
            return;
        }
+       // Reset buses, respond if error
        if (!$this->bus_model->reset()) {
            header('Content-Type: application/json');
            echo json_encode(array('valid' => false, 'csrf_token' => $this->security->get_csrf_hash()));
            return;
        }
-
+        // Ignore all issues in db, respond if error
        if (!$this->issues_model->reset()) {
            header('Content-Type: application/json');
            echo json_encode(array('valid' => false, 'csrf_token' => $this->security->get_csrf_hash()));
            return;
        }
+       // Respond on success
        header('Content-Type: application/json');
        echo json_encode(array('valid' => true, 'csrf_token' => $this->security->get_csrf_hash()));
 
     }
 
+    // add bus to db
     public function add() {
         // Sanitize data
         $bus = $this->sanitize($_POST['bus']);

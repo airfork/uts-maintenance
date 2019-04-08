@@ -60,6 +60,7 @@ class User extends CI_Controller {
         $this->load->view('user/register', $data);
     }
 
+    // Creates user
     public function create() {
         $this->signed_in();
         $this->load->helper('form');
@@ -91,7 +92,8 @@ class User extends CI_Controller {
         }
     }
 
-    public function check_user() {
+    // Checks username and password
+    public function check_user(): bool {
         $this->signed_in();
         $username = $this->sanitize($this->input->post('username'));
         $password = $this->input->post('password');
@@ -124,6 +126,7 @@ class User extends CI_Controller {
 
     // Generate master excel sheet of issues
     private function master() {
+        // List of zones
         $locations = array(
             'Destination Signs & Emergency Button',
             'Zonar',
@@ -148,17 +151,28 @@ class User extends CI_Controller {
         $evenStyle = array('font'=>'Arial','font-size'=>11, 'fill'=>'#ccc', 'border'=>'left,right', 'border-style' => 'thin', 'halign' => 'center');
         $oddStyle = array('font'=>'Arial','font-size'=>11, 'border'=>'left,right', 'border-style' => 'thin', 'halign' => 'center');
 
+        // Iterate over locations
+        // Each iteration create a sheet for the location
+        // And get all issues related to that location and write it
+        // to the Excel sheet
         foreach ($locations as $location) {
+            // Get issues dealing with this location
             $rows = $this->issues_model->get_issues($location);
+            // Keep track of count to see if even or odd row
             $count = 0;
+            // Shorten 'Destination Signs & ...'
             $location = ($location == 'Destination Signs & Emergency Button' ? 'Dest. Signs' : $location);
+            // Write sheet header to format columns
             $writer->writeSheetHeader($location, array('Unit #' => 'integer', 'Details' => 'string', 'Date Reported' => 'MM/DD/YYYY'), $col_options = ['widths'=>[10,48,19], 'halign' => 'center', 'border'=>'left,right,top,bottom', 'border-style' => 'thin', 'font-style' => 'bold']);
+            // Create rows in sheet
             foreach ($rows as $issue) {
                 $style = ($count++ % 2 == 0 ? $evenStyle : $oddStyle);
                 $writer->writeSheetRow($location, array($issue['busnumber'], $issue['description'], $issue['createdat']), $style);
             }
+            // Sanity check, could probably remove, just makes sure at least one row is always written
             $writer->writeSheetRow($location, array());
         }
+        // Save excel file
         $writer->writeToFile('Bus Issue Master.xlsx');
     }
 
