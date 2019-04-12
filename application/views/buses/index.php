@@ -18,6 +18,10 @@
         if (getenv('PRODUCTION')) {
             $favURL = 'https://inspection-list.herokuapp.com/bus-favicon';
         }
+        $web = base_url();
+        if (getenv('PRODUCTION')) {
+            $web = 'https://inspection-list.herokuapp.com/';
+        }
     ?>
 
     <link rel="apple-touch-icon" sizes="180x180" href="<?php echo $favURL.'/apple-touch-icon.png'; ?>">
@@ -34,6 +38,20 @@
         $url = 'https://inspection-list.herokuapp.com/buses/';
     }
 ?>
+
+
+<nav>
+    <div class="nav-wrapper">
+        <ul id="nav-mobile" class="right">
+            <?php if($signedIn){ ?>
+                <li><a href="<?php echo $web.'dashboard'; ?>">Dashboard</a></li>
+                <li><a href="<?php echo $web.'logout'; ?>">Logout</a></li>
+            <?php } else { ?>
+                <li><a href="<?php echo $web.'login'; ?>">Login</a></li>
+            <?php } ?>
+        </ul>
+    </div>
+</nav>
 
 <body>
     <div class="container bus-list">

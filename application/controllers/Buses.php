@@ -24,6 +24,7 @@ class Buses extends CI_Controller {
 
     public function index() {
         $data['buses'] = $this->bus_model->get_buses();
+        $data['signedIn'] = $this->validate();
         $this->load->view('buses/index', $data);
     }
 
@@ -211,7 +212,7 @@ class Buses extends CI_Controller {
         echo json_encode(array('valid' => true, 'csrf_token' => $this->security->get_csrf_hash()));
     }
 
-    private function validate() {
+    private function validate(): bool{
         if (empty($_SESSION['id'])) {
             return false;
         }

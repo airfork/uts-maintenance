@@ -6,7 +6,7 @@ html {
 }
 
 .bus-list {
-    margin-top: 3rem;
+    margin-top: 1%;
 }
 
 tr:hover {
@@ -24,6 +24,17 @@ th {
 
 td {
     font-size: 1.3rem;
+}
+
+nav {
+    background-color: #f0e2f5;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    padding-right: 1.5%;
+}
+
+nav ul a {
+    color: #000;
 }
 
 

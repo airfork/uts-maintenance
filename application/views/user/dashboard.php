@@ -38,6 +38,10 @@
     if ($production) {
         $favURL = 'https://inspection-list.herokuapp.com/bus-favicon';
     }
+    $web = base_url();
+    if ($production) {
+        $web = 'https://inspection-list.herokuapp.com/';
+    }
     ?>
 
     <link rel="apple-touch-icon" sizes="180x180" href="<?php echo $favURL.'/apple-touch-icon.png'; ?>">
@@ -47,6 +51,15 @@
 
     <title>Inspections</title>
 </head>
+
+<nav>
+    <div class="nav-wrapper">
+        <ul id="nav-mobile" class="right">
+            <li><a href="<?php echo $web.'logout'; ?>">Logout</a></li>
+        </ul>
+    </div>
+</nav>
+
 <body>
     <div class="container">
         <h2 onclick="window.location.href = '<?php echo $url ?>'" class="dash">Dashboard</h2>
