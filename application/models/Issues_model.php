@@ -28,6 +28,7 @@ class Issues_model extends CI_Model {
     }
 
     public function get_issues($area) {
+        $this->db->order_by('createdat', 'ASC');
         $this->db->order_by('busnumber', 'ASC');
         $query = $this->db->get_where('issues', array('location' => $area, 'ignored' => false));
         return $query->result_array();

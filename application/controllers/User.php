@@ -163,7 +163,7 @@ class User extends CI_Controller {
             // Shorten 'Destination Signs & ...'
             $location = ($location == 'Destination Signs & Emergency Button' ? 'Dest. Signs' : $location);
             // Write sheet header to format columns
-            $writer->writeSheetHeader($location, array('Unit #' => 'integer', 'Details' => 'string', 'Date Reported' => 'MM/DD/YYYY'), $col_options = ['widths'=>[10,48,19], 'halign' => 'center', 'border'=>'left,right,top,bottom', 'border-style' => 'thin', 'font-style' => 'bold']);
+            $writer->writeSheetHeader($location, array('Unit #' => 'integer', 'Details' => 'string', 'Date Reported' => 'MM/DD/YYYY'), $col_options = ['widths'=>[10,50,19], 'halign' => 'center', 'border'=>'left,right,top,bottom', 'border-style' => 'thin', 'font-style' => 'bold']);
             // Create rows in sheet
             foreach ($rows as $issue) {
                 $style = ($count++ % 2 == 0 ? $evenStyle : $oddStyle);
