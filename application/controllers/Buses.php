@@ -198,14 +198,14 @@ class Buses extends CI_Controller {
             echo json_encode(array('valid' => false, 'error' => 'Bus does not exist.' ,'csrf_token' => $this->security->get_csrf_hash()));
             return;
         }
-        if (!$this->bus_model->delete($bus)) {
-            header('Content-Type: application/json');
-            echo json_encode(array('valid' => false, 'error' => 'There was an error of some sort, please try again.' ,'csrf_token' => $this->security->get_csrf_hash()));
-            return;
-        }
         if (!$this->issues_model->delete($bus)) {
             header('Content-Type: application/json');
-            echo json_encode(array('valid' => false, 'error' => 'There was an error of some sort, please try again.' ,'csrf_token' => $this->security->get_csrf_hash()));
+            echo json_encode(array('valid' => false, 'error' => 'Failed to delete issues related to bus.' ,'csrf_token' => $this->security->get_csrf_hash()));
+            return;
+        }
+        if (!$this->bus_model->delete($bus)) {
+            header('Content-Type: application/json');
+            echo json_encode(array('valid' => false, 'error' => 'Failed to delete bus from database.' ,'csrf_token' => $this->security->get_csrf_hash()));
             return;
         }
         header('Content-Type: application/json');
