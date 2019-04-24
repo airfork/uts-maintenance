@@ -5,6 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="theme-color" content="#f0e2f5">
     <link rel="stylesheet" type="text/css" href="<?php if(getenv('PRODUCTION')){
         echo 'https://inspection-list.herokuapp.com/css/login.css';
     } else {
