@@ -62,7 +62,6 @@ class User extends CI_Controller {
 
     // Creates user
     public function create() {
-        $this->signed_in();
         $this->load->helper('form');
         $this->load->library('form_validation');
         $this->load->library('encryption');
