@@ -59,7 +59,7 @@
         <table class="striped highlight">
             <thead>
                 <tr>
-                    <th>Bus Number</th>
+                    <th>Bus Number <?php echo '('.count($buses).' Left)'; ?></th>
                 </tr>
             </thead>
             <tbody>
