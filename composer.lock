@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b1ab6e8f7b48b2e473bfdea4dd25eae3",
+    "content-hash": "498fa5eab688c5a0f873dec1b3ad2a89",
     "packages": [
         {
             "name": "mk-j/php_xlsxwriter",
@@ -107,16 +107,16 @@
             "time": "2019-03-17T17:37:11+00:00"
         },
         {
-            "name": "mikey179/vfsstream",
+            "name": "mikey179/vfsStream",
             "version": "v1.1.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/mikey179/vfsstream.git",
+                "url": "https://github.com/bovigo/vfsStream.git",
                 "reference": "fc0fe8f4d0b527254a2dc45f0c265567c881d07e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mikey179/vfsstream/zipball/fc0fe8f4d0b527254a2dc45f0c265567c881d07e",
+                "url": "https://api.github.com/repos/bovigo/vfsStream/zipball/fc0fe8f4d0b527254a2dc45f0c265567c881d07e",
                 "reference": "fc0fe8f4d0b527254a2dc45f0c265567c881d07e",
                 "shasum": ""
             },
