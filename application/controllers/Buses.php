@@ -111,7 +111,7 @@ class Buses extends CI_Controller {
             return;
         }
         // Mark bus as done
-        if (!$this->bus_model->update($bus)) {
+        if (!$this->bus_model->update($bus, $this->sanitize($name))) {
             header('Content-Type: application/json');
             echo json_encode(array('valid' => false, 'csrf_token' => $this->security->get_csrf_hash()));
             return;
@@ -210,6 +210,18 @@ class Buses extends CI_Controller {
         }
         header('Content-Type: application/json');
         echo json_encode(array('valid' => true, 'csrf_token' => $this->security->get_csrf_hash()));
+    }
+
+    public function completed() {
+        if (!$this->validate()) {
+            if ($this->production) {
+                redirect($this->webURL, 'refresh');
+                return;
+            }
+            redirect('/', 'refresh');
+        }
+        $data['buses'] = $this->bus_model->get_completed_buses();
+        $this->load->view('buses/completed', $data);
     }
 
     private function validate(): bool{

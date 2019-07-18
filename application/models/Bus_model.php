@@ -21,14 +21,22 @@ class Bus_model extends CI_Model {
         return $query->row_array();
     }
 
-    public function update($bus = NULL) {
+    public function get_completed_buses() {
+        $this->db->order_by('id', 'ASC');
+        $query = $this->db->get_where('buses', array('completed' => true));
+        return $query->result_array();
+    }
+
+    public function update($bus = NULL, $name = NULL) {
         $this->db->set('completed', TRUE);
+        $this->db->set('completedby', $name);
         $this->db->where('id', $bus);
         return $this->db->update('buses');
     }
 
     public function reset() {
         $this->db->set('completed', false);
+        $this->db->set('completedby', '');
         return $this->db->update('buses');
     }
 
