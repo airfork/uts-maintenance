@@ -122,7 +122,7 @@
                 <div class="collapsible-header"><i class="material-icons">done</i>Completed Buses</div>
                 <div class="collapsible-body collapse-background center-align">
                     <span>
-                        <a href="<?php echo $url. 'buses/completed'; ?>" class="dashboard-action" id="bus-list"">
+                        <a href="<?php echo $url. '/buses/completed'; ?>" class="dashboard-action" id="bus-list"">
                             View Completed Buses
                         </a>
                     </span>
