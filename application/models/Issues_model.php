@@ -34,10 +34,27 @@ class Issues_model extends CI_Model {
         return $query->result_array();
     }
 
+    public function get_issue($id = null) {
+    	$query = $this->db->get_where('issues', array('id' => $id, 'ignored' => false, 'repaired_at' => null));
+    	return $query->row_array();
+	}
+
     public function delete($bus): bool {
         $this->db->where('busnumber', $bus);
         return $this->db->delete('issues');
     }
+
+    public function current_issues($busNumber) {
+    	$this->db->order_by('location', 'ASC');
+    	$query = $this->db->get_where('issues', array('busnumber' => $busNumber, 'ignored' => false, 'repaired_at' => null));
+    	return $query->result_array();
+	}
+
+	public function resolve($issue) {
+    	$this->db->set('repaired_at', 'NOW()', false);
+    	$this->db->where('id', $issue);
+    	return $this->db->update('issues');
+	}
 
     private function sanitize($data) {
         return htmlspecialchars(trim(stripslashes($data)));

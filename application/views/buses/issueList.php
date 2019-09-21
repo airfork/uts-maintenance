@@ -34,12 +34,11 @@
 </head>
 
 <?php
-$url = site_url('buses/');
+$url = site_url('/');
 if (getenv('PRODUCTION')) {
-    $url = 'https://inspection-list.herokuapp.com/buses/';
+    $url = 'https://inspection-list.herokuapp.com/';
 }
 ?>
-
 
 <nav>
     <div class="nav-wrapper">
@@ -50,31 +49,42 @@ if (getenv('PRODUCTION')) {
         </ul>
     </div>
 </nav>
-
 <body>
     <div class="container bus-list">
-        <table class="striped highlight">
-            <thead>
-            <tr>
-                <th>Bus Number <?php echo '('.count($buses).' Completed)'; ?></th>
-                <th>Completed By</th>
-            </tr>
-            </thead>
-            <tbody>
-            <?php foreach ($buses as $bus): ?>
-                <tr onclick="window.location.href = '<?php echo $url.$bus['id'].'/issues'; ?>'">
-                    <td>
-                        <?php echo $bus['id']; ?>
-                    </td>
-                    <td>
-                        <?php echo $bus['completedby']; ?>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-            </tbody>
-        </table>
+        <h2>Issues - <?php echo $busNumber; ?></h2>
+		<?php if (empty($issues)) { ?>
+			<p>This bus has no issues</p>
+		<?php } else { ?>
+			<table class="striped highlight">
+				<thead>
+				<tr>
+					<th>Location</th>
+					<th>Issue</th>
+				</tr>
+				</thead>
+				<tbody>
+				<?php foreach ($issues as $issue): ?>
+					<tr onclick="issue(this, <?php echo $issue['id']; ?>)">
+						<td>
+							<?php echo $issue['location']; ?>
+						</td>
+						<td>
+							<?php echo $issue['description']; ?>
+						</td>
+					</tr>
+				<?php endforeach; ?>
+				</tbody>
+			</table>
+		<?php } ?>
+		<input type="hidden" value="<?php echo $url; ?>" id="url">
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+	<script src="<?php if(getenv('PRODUCTION')){
+		echo 'https://inspection-list.herokuapp.com/js/issues.js';
+	} else {
+		echo base_url() . 'js/issues.js';
+	} ?>">
+	</script>
 </body>
 </html>

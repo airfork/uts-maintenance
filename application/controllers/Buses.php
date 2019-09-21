@@ -213,16 +213,41 @@ class Buses extends CI_Controller {
     }
 
     public function completed() {
-        if (!$this->validate()) {
-            if ($this->production) {
-                redirect($this->webURL, 'refresh');
-                return;
-            }
-            redirect('/', 'refresh');
-        }
+		if (!$this->validate()) {
+			$this->redirectHome();
+			return;
+		}
         $data['buses'] = $this->bus_model->get_completed_buses();
         $this->load->view('buses/completed', $data);
     }
+
+    public function issue_list($bus=null) {
+		if (!$this->validate()) {
+			$this->redirectHome();
+			return;
+		}
+		$busInfo = $this->bus_model->get_buses($bus);
+		if (!$busInfo['completed']) {
+			$this->redirectHome();
+			return;
+		}
+		$data['busNumber'] = $bus;
+		$data['issues'] = $this->issues_model->current_issues($bus);
+		$this->load->view('buses/issueList', $data);
+	}
+
+	public function resolve_issue($issue) {
+    	$found = $this->issues_model->get_issue($issue);
+    	if (empty($found)) {
+			header('Content-Type: application/json');
+			echo json_encode(array('valid' => false, 'error' => 'Invalid issue, please refresh and try again.'));
+			return;
+		}
+    	$this->issues_model->resolve($issue);
+
+		header('Content-Type: application/json');
+		echo json_encode(array('valid' => true));
+	}
 
     private function validate(): bool{
         if (empty($_SESSION['id'])) {
@@ -230,6 +255,14 @@ class Buses extends CI_Controller {
         }
         return true;
     }
+
+    private function redirectHome() {
+		if ($this->production) {
+			redirect($this->webURL, 'refresh');
+			return;
+		}
+		redirect('/', 'refresh');
+	}
 
     private function sanitize($data) {
         return htmlspecialchars(trim(stripslashes($data)));
