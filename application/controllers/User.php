@@ -162,17 +162,17 @@ class User extends CI_Controller {
             // Shorten 'Destination Signs & ...'
             $location = ($location == 'Destination Signs & Emergency Button' ? 'Dest. Signs' : $location);
             // Write sheet header to format columns
-            $writer->writeSheetHeader($location, array('Unit #' => 'integer', 'Details' => 'string', 'Date Reported' => 'MM/DD/YYYY'), $col_options = ['widths'=>[10,50,19], 'halign' => 'center', 'border'=>'left,right,top,bottom', 'border-style' => 'thin', 'font-style' => 'bold']);
+            $writer->writeSheetHeader($location, array('Unit #' => 'integer', 'Details' => 'string', 'Date Reported' => 'MM/DD/YYYY', 'Date Repaired' => 'MM/DD/YYYY'), $col_options = ['widths'=>[10,50,19,19], 'halign' => 'center', 'border'=>'left,right,top,bottom', 'border-style' => 'thin', 'font-style' => 'bold']);
             // Create rows in sheet
             foreach ($rows as $issue) {
                 $style = ($count++ % 2 == 0 ? $evenStyle : $oddStyle);
-                $writer->writeSheetRow($location, array($issue['busnumber'], $issue['description'], $issue['createdat']), $style);
+                $writer->writeSheetRow($location, array($issue['busnumber'], $issue['description'], $issue['createdat'], $issue['repaired_at']), $style);
             }
             // Sanity check, could probably remove, just makes sure at least one row is always written
             $writer->writeSheetRow($location, array());
         }
         // Save excel file
-        $writer->writeToFile('Bus Issue Master.xlsx');
+        $writer->writeToFile('spreadsheets/Bus Issue Master.xlsx');
     }
 
     private function sanitize($data) {

@@ -80,7 +80,7 @@
                 <div class="collapsible-header"><i class="material-icons">list</i>Master List</div>
                 <div class="collapsible-body collapse-background center-align">
                     <span>
-                        <a href="Bus Issue Master.xlsx" class="dashboard-action">
+                        <a href="spreadsheets/Bus Issue Master.xlsx" class="dashboard-action">
                             Download Master List
                         </a>
                     </span>
