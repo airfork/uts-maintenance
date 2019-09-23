@@ -29,7 +29,6 @@ class Buses extends CI_Controller {
     public function index() {
         $data['buses'] = $this->bus_model->get_buses();
         $data['signedIn'] = $this->validate();
-        $this->email_issues();
         $this->load->view('buses/index', $data);
     }
 
@@ -122,6 +121,7 @@ class Buses extends CI_Controller {
             return;
         }
 		$this->issue_sheet($bus);
+		$this->email_issues($bus);
         // Success
         header('Content-Type: application/json');
         echo json_encode(array('valid' => true, 'csrf_token' => $this->security->get_csrf_hash()));
@@ -289,17 +289,16 @@ class Buses extends CI_Controller {
 		return true;
 	}
 
-	private function email_issues() {
+	private function email_issues($bus) {
 		$this->load->config('email');
 		$emails = $this->contacts_model->get_contacts(false);
 		$this->email->from($this->config->item('smtp_user'), "Tunji Afolabi-Brown");
 		$this->email->to($this->email_arr_to_string($emails));
-		$this->email->subject('Email Test');
-		$this->email->message('Testing the email class.');
-
-		if ($this->email->send()) {
-			echo 'Your Email has successfully been sent.';
-		} else {
+		$this->email->subject('Bus Inspection');
+		$this->email->message('Here is the inspection spreadsheet for unit '.$bus);
+		$this->email->attach('spreadsheets/'.$bus.'.xlsx');
+		$this->email->set_newline("\r\n");
+		if (!$this->email->send()) {
 			show_error($this->email->print_debugger());
 		}
 	}

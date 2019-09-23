@@ -122,10 +122,18 @@
                 <div class="collapsible-header"><i class="material-icons">done</i>Completed Buses</div>
                 <div class="collapsible-body collapse-background center-align">
                     <span>
-                        <a href="<?php echo $url. '/buses/completed'; ?>" class="dashboard-action" id="bus-list"">
-                            View Completed Buses
-                        </a>
-                    </span>
+                        <a href="<?php echo $url. '/buses/completed'; ?>" class="dashboard-action" id="bus-list">
+						   View Completed Buses</a>
+                        </span>
+                </div>
+            </li>
+			<li>
+                <div class="collapsible-header"><i class="material-icons">people</i>Contact List</div>
+                <div class="collapsible-body collapse-background center-align">
+                    <span>
+                        <a href="<?php echo $url. '/contacts'; ?>" class="dashboard-action">
+                            View Contact List</a>
+					</span>
                 </div>
             </li>
         </ul>
