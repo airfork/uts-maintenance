@@ -7,17 +7,17 @@
     color: #ba2d65 !important;
 }
 /* label focus color */
-.input-field input[type=text]:focus + label, .input-field input[type=number]:focus + label {
+.input-field input[type=text]:focus + label, .input-field input[type=number]:focus + label, .input-field input[type=email]:focus + label {
     color: #ba2d65 !important;
 }
 /* label underline focus color */
-.input-field input[type=text]:focus, textarea.materialize-textarea:focus, .input-field input[type=number]:focus {
+.input-field input[type=text]:focus, textarea.materialize-textarea:focus, .input-field input[type=number]:focus, .input-field input[type=email]:focus {
     border-bottom: 1px solid #ff94c2 !important;
     -webkit-box-shadow: 0 1px 0 0 #ff94c2 !important;
     box-shadow: 0 1px 0 0 #ff94c2 !important;
 }
 
-.input-field input[type=text], textarea.materialize-textarea, .input-field input[type=number] {
+.input-field input[type=text], textarea.materialize-textarea, .input-field input[type=number], .input-field input[type=email] {
     border-bottom: 1px solid #ff94c2 !important;
 }
 

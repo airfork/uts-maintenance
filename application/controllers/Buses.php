@@ -1,5 +1,7 @@
 <?php
 
+use phpDocumentor\Reflection\Types\Boolean;
+
 /**
  * Created by PhpStorm.
  * User: airfork
@@ -15,8 +17,10 @@ class Buses extends CI_Controller {
         parent::__construct();
         $this->load->model('bus_model');
         $this->load->model('issues_model');
+        $this->load->model('contacts_model');
         $this->load->helper('url_helper');
         $this->load->library('session');
+        $this->load->library('email');
         if (getenv('PRODUCTION')) {
             $this->production = true;
         }
@@ -25,6 +29,7 @@ class Buses extends CI_Controller {
     public function index() {
         $data['buses'] = $this->bus_model->get_buses();
         $data['signedIn'] = $this->validate();
+        $this->email_issues();
         $this->load->view('buses/index', $data);
     }
 
@@ -116,6 +121,7 @@ class Buses extends CI_Controller {
             echo json_encode(array('valid' => false, 'csrf_token' => $this->security->get_csrf_hash()));
             return;
         }
+		$this->issue_sheet($bus);
         // Success
         header('Content-Type: application/json');
         echo json_encode(array('valid' => true, 'csrf_token' => $this->security->get_csrf_hash()));
@@ -148,6 +154,10 @@ class Buses extends CI_Controller {
 
     // add bus to db
     public function add() {
+		if (!$this->validate()) {
+			$this->redirectHome();
+			return;
+		}
         // Sanitize data
         $bus = $this->sanitize($_POST['bus']);
         // Make sure input is a number
@@ -182,6 +192,10 @@ class Buses extends CI_Controller {
     }
 
     public function delete() {
+		if (!$this->validate()) {
+			$this->redirectHome();
+			return;
+		}
         // Sanitize input
         $bus = $this->sanitize($_POST['bus']);
         // Make sure input is a number
@@ -237,6 +251,10 @@ class Buses extends CI_Controller {
 	}
 
 	public function resolve_issue($issue) {
+		if (!$this->validate()) {
+			$this->redirectHome();
+			return;
+		}
     	$found = $this->issues_model->get_issue($issue);
     	if (empty($found)) {
 			header('Content-Type: application/json');
@@ -249,7 +267,52 @@ class Buses extends CI_Controller {
 		echo json_encode(array('valid' => true));
 	}
 
-    private function validate(): bool{
+	private function issue_sheet($busNumber) : bool {
+    	$issues = $this->issues_model->current_issues($busNumber);
+    	if (empty($issues)) {
+    		return false;
+		}
+		$writer = new XLSXWriter();
+		$evenStyle = array('wrap-text'=>true, 'font'=>'Arial','font-size'=>11, 'fill'=>'#ccc', 'border'=>'left,right', 'border-style' => 'thin', 'halign' => 'center');
+		$oddStyle = array('wrap-text'=>true, 'font'=>'Arial','font-size'=>11, 'border'=>'left,right', 'border-style' => 'thin', 'halign' => 'center');
+
+		$count = 0;
+		// Write sheet header to format columns
+		$writer->writeSheetHeader('Bus '.$busNumber, array('Location' => 'string', 'Details' => 'string', 'Date Reported' => 'MM/DD/YYYY'), $col_options = ['widths'=>[40,50,19], 'halign' => 'center', 'border'=>'left,right,top,bottom', 'border-style' => 'thin', 'font-style' => 'bold']);
+		foreach ($issues as $issue) {
+			$style = ($count++ % 2 == 0 ? $evenStyle : $oddStyle);
+			$location = ($issue['location'] == 'Destination Signs & Emergency Button' ? 'Dest. Signs' : $issue['location']);
+			$writer->writeSheetRow('Bus '.$busNumber, array($location, $issue['description'], $issue['createdat']), $style);
+		}
+		// Save excel file
+		$writer->writeToFile('spreadsheets/'.$busNumber.'.xlsx');
+		return true;
+	}
+
+	private function email_issues() {
+		$this->load->config('email');
+		$emails = $this->contacts_model->get_contacts(false);
+		$this->email->from($this->config->item('smtp_user'), "Tunji Afolabi-Brown");
+		$this->email->to($this->email_arr_to_string($emails));
+		$this->email->subject('Email Test');
+		$this->email->message('Testing the email class.');
+
+		if ($this->email->send()) {
+			echo 'Your Email has successfully been sent.';
+		} else {
+			show_error($this->email->print_debugger());
+		}
+	}
+
+	private function email_arr_to_string($emails) {
+    	$output = "";
+    	foreach ($emails as $address) {
+    		$output .= $address['email'].',';
+		}
+    	return trim($output, ',');
+	}
+
+    private function validate(): bool {
         if (empty($_SESSION['id'])) {
             return false;
         }
