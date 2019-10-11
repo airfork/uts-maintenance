@@ -80,7 +80,9 @@ class Buses extends CI_Controller {
         // Make global because scoping is weird in PHP
         global $valid;
         global $name;
+        global $issuesCount;
         $valid = false;
+        $issuesCount = 0;
         // Iterate over items in POST
         foreach ($_POST as $loc => $issue) {
             // Replace any underscores put in with spaces
@@ -92,6 +94,7 @@ class Buses extends CI_Controller {
 
                 // Check that location exits and that the issue is not whitespace
             } else if(in_array(htmlspecialchars_decode($loc), $locations) && trim($issue) !== '') {
+				$issuesCount++;
                 // If name is not set, exit
                 if (!$valid) {
                     header('Content-Type: application/json');
@@ -120,8 +123,10 @@ class Buses extends CI_Controller {
             echo json_encode(array('valid' => false, 'csrf_token' => $this->security->get_csrf_hash()));
             return;
         }
-		$this->issue_sheet($bus);
-		$this->email_issues($bus);
+        if ($issuesCount > 0) {
+			$this->issue_sheet($bus);
+			$this->email_issues($bus);
+		}
         // Success
         header('Content-Type: application/json');
         echo json_encode(array('valid' => true, 'csrf_token' => $this->security->get_csrf_hash()));
