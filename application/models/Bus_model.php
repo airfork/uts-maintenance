@@ -13,7 +13,8 @@ class Bus_model extends CI_Model {
 
     public function get_buses($slug = false) {
         if ($slug == false) {
-            $this->db->order_by('id', 'ASC');
+            $this->db->order_by('completedby', 'ASC');
+			$this->db->order_by('id', 'ASC');
             $query = $this->db->get_where('buses', array('completed' => false));
             return $query->result_array();
         }
